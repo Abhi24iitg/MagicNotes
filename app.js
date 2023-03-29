@@ -5,15 +5,21 @@ shownotes();
 let addbtn = document.getElementById("addBtn");
 addbtn.addEventListener("click", function () {
   let addTxt = document.getElementById("addTxt");
+  let addTitle = document.getElementById("addTitle");
   let notes = localStorage.getItem("notes"); //here notes is a key(a string)
   if (notes == null) {
     notesObj = [];
   } else {
     notesObj = JSON.parse(notes);
   }
-  notesObj.push(addTxt.value);
+  let myObj = {
+    title: addTitle.value,
+    text: addTxt.value,
+  };
+  notesObj.push(myObj);
   localStorage.setItem("notes", JSON.stringify(notesObj));
   addTxt.value = "";
+  addTitle.value = "";
   shownotes();
 });
 
@@ -28,10 +34,11 @@ function shownotes() {
   }
   let html = "";
   notesObj.forEach(function (element, index) {
+    let textarea2 = document.getElementById("addTxt2");
     html += `  <div class="card my-2 mx-2 noteCard" style="width: 18rem;">
     <div class="card-body">
-      <h5 class="card-title">Note${index + 1}</h5>
-      <p class="card-text">${element}</p>
+      <h5 class="card-title">${element.title}</h5>
+      <p class="card-text">${element.text}</p>
       <button id="${index}" onclick="delnote(this.id)" class="btn btn-primary">Delete Note</button>
     </div>
   </div>`;
@@ -71,3 +78,4 @@ search.addEventListener("input", function () {
     }
   });
 });
+
